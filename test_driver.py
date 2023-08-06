@@ -1,10 +1,8 @@
-# TODO Claim this as your own work by modifying the following...
-# File: test_driver.py 
-# Author: your name... 
-# Id: your id... 
-# Description: your program description here... 
-# This is my own work as defined by the 
-# Academic Integrity policy. 
+# File: pizza_shop.py 
+# Author: Volodymyr Gordiienko
+# Id: 45701
+# Description: This is my Assignment of OOP in COMP1046
+# This is my own work as defined by the Academic Integrity policy. 
 
 import pizza_shop
 # TODO Import unittest/pytest

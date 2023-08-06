@@ -4,7 +4,7 @@ base: cheese crust $12
 tomato sauce $0
 bbq sauce $0
 sweet chilli sauce $0.5
-chedder cheese $1
+cheddar cheese $1
 mozzarella cheese $1
 fetta cheese $1
 ham $2
