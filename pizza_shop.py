@@ -75,25 +75,28 @@ class PizzaMenu:
 class PizzaShop:
     def __init__(self):
         self.pizza_menu = PizzaMenu()
+        # initialise an empty dictionary for ingredients
         self.ingredients = {}
     
     def load_menu(self):
         # load the ingredients first before the menu
         self.load_ingredients()
-        # set the open() statement to a variable
+        # set open_menu to a variable
         open_menu = open("menu.txt", "r")
-        # opens the menu.txt file for reading and makes everything a list of strings
+        # opens the menu.txt file for reading and all the text file contents
+        # a list of strings
         lines = open_menu.readlines()
-        # removes any unwanted space or blank space characters
-        stripped_lines = lines.strip()
+        
         # makes each line a list with the name of the pizza and all the ingredients as 2 total
         # list elements for each list
-        split_lines = stripped_lines.split("$")
-        for eachLine in stripped_lines:
-            name_and_price = eachLine[1].split()
-            name = name_and_price[0]
-            price = float(name_and_price[1])
-            toppings = name_and_price[2:]
+        for eachLine in lines:
+            stripped_line = eachLine.strip()
+            print(eachLine)
+
+            
+
+
+            
 
         return Pizza(name, price, toppings)
     
@@ -121,11 +124,14 @@ class PizzaShop:
                 # checks to see if the line starts with the word base and if it does, 
                 # it makes it a PizzaBase
                 if len(name) >= 4 and name[:4].lower() == "base":
-                    ingredients.append(PizzaBase(name, price))
+                    ingredient = PizzaBase(name, price)
                 else:
                     # if the line doesn't start with the word base, it makes it a
                     # Food object with the name and price
-                    ingredients.append(Food(name, price))
+                    ingredient = Food(name, price)
+                
+                ingredients.append(ingredient)
+                self.ingredients[name] = ingredient
         # close the ingredients.txt file
         open_ingredients.close()
 
@@ -217,6 +223,8 @@ class OrderingSystem(Interface):
 def main():
     print("---Welcome to the Pizza Shop---")
     print()
+    # customer_name_input = input("Please enter your name to get started!")
+    # testing the PizzaBase class
     user_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
     b = PizzaBase("cheesy crust", 14, "pepperoni", user_input)
     print(b)
@@ -224,6 +232,12 @@ def main():
     b.set_name("thin crust")
     print(b)
     print(b.get_name())
+    # testing the PizzaShop class
+    print()
+    pizza_shop = PizzaShop()
+    pizza_shop.load_menu()
+    pizza_shop.load_ingredients()
+    print(pizza_shop)
 
 if __name__ == '__main__':
     main()
