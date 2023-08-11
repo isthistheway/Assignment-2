@@ -90,13 +90,23 @@ class PizzaShop:
         # makes each line a list with the name of the pizza and all the ingredients as 2 total
         # list elements for each list
         for eachLine in lines:
-            stripped_line = eachLine.strip()
-            print(eachLine)
+            pizza_info = eachLine.split(' $')
+            print(pizza_info)
+            name = pizza_info[0]
+            string_price = pizza_info[1][:2]
+            index = 0
+            print(name)
+            price = float(string_price)
+            print(string_price)
+            toppings = pizza_info[1][3:]
+            print(toppings)
 
-            
-
-
-            
+            myList = []
+            myList.append(name)
+            print(myList)
+            myList.append(price)
+            myList.append(toppings)
+            print(myList)
 
         return Pizza(name, price, toppings)
     
@@ -234,10 +244,11 @@ def main():
     print(b.get_name())
     # testing the PizzaShop class
     print()
-    pizza_shop = PizzaShop()
+    pizza_shop = PizzaShop("vlad")
     pizza_shop.load_menu()
     pizza_shop.load_ingredients()
     print(pizza_shop)
+    p = PizzaShop()
 
 if __name__ == '__main__':
     main()
