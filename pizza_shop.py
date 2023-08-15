@@ -6,22 +6,30 @@
 
 import math
 
-class Food:
-    def __init__(self, name, price):
-        self.__name = name
-        self.__price = price
+class Ingredient:
+    def __init__(self, Cost, Name, formatPrice):  
+        self.__Cost = Cost
+        self.__Name = Name
+        self.__formatPrice = formatPrice
 
-    def set_name(self, name):
-        self.__name = name
+    def getCost(self):
+        return self.__Cost
+    
+    def getName(self):
+        return self.__Name
+    
+    def getFormatPrice(self):
+        return self.__formatPrice
+    
+    def displayFormatPrice(self):
+        return f"{self.__formatPrice}"
 
-    def get_name(self):
-        return self.__name
+class PizzaBase(Ingredient):
+    def __init__(self, pizzaSize, baseType, user_input):
+        super().__init__(self, self.__Cost, self.__Name, self.__formatPrice)
+        self.__pizzaSize = pizzaSize
+        self.__baseType = baseType
 
-class PizzaBase(Food):
-    def __init__(self, name, price, size, user_input):
-        super().__init__(name, price)
-        self.__size = size
-        self.user_input = user_input
         if user_input == 1:
             self.__size = 10
         elif user_input == 2:
@@ -30,12 +38,31 @@ class PizzaBase(Food):
             self.__size = 14
         else:
             print("Invalid input: can only choose 1, 2 or 3.")
+    def getPizzaSize(self):
+        return self.__pizzaSize
+    
+    def calcSquareInch(self):
+        return None
+    
+    def calcCostPerSquareInch(self):
+        return None
+    
+    def setSize(self, newSize):
+        self.__pizzaSize = newSize
+
+    def getBase(self):
+        return self.__baseType
+    
+    def setBase(self, newBase):
+        self.__baseType = newBase
 
     def __str__(self):
-        return "PizzaBase" + self.get_name() + " " + str(self.__size)
+        return "PizzaBase" + self.__Name() + " " + str(self.__size)
 
 class Pizza(PizzaBase):
+    super().__init__(self, self.price)
     def __init__(self, toppings, crusts, price):
+        super().__init__(self, self.)
         self.__toppings = []
         self.__crusts = crusts
         self.__price = price
@@ -64,13 +91,6 @@ class Pizza(PizzaBase):
     # getter method for the private variable self.__toppings
     def getToppings(self):
         return self.__toppings
-    
-class PizzaMenu:
-    def __init__(self, menu):
-        self.menu = []
-    
-    def addPizza(self, pizza):
-        self.menu.append(pizza)
 
 class PizzaShop:
     def __init__(self):
@@ -101,12 +121,12 @@ class PizzaShop:
             toppings = pizza_info[1][3:]
             print(toppings)
 
-            myList = []
-            myList.append(name)
-            print(myList)
-            myList.append(price)
-            myList.append(toppings)
-            print(myList)
+            pizza_info_separated = []
+            pizza_info_separated.append(name)
+            print(pizza_info_separated)
+            pizza_info_separated.append(price)
+            pizza_info_separated.append(toppings)
+            print(pizza_info_separated)
 
         return Pizza(name, price, toppings)
     
@@ -149,86 +169,6 @@ class PizzaShop:
 
     def __str__(self):
         return f"Pizza Base: {self.name}, Price: ${self.price:.2f}"
-    
-class PizzaTopping:
-    def __init__(self, toppingCost, toppingName, toppingID):
-        self.__toppingCost = toppingCost
-        self.__toppingName = toppingName
-        self.__toppingID = toppingID
-
-    def getToppingCost(self):
-        return self.__toppingCost
-    
-    def getToppingName(self):
-        return self.__toppingName
-    
-    def getToppingID(self):
-        return self.__toppingID
-    
-class Ingredient(PizzaTopping):
-    def __init__(self, ingredientCost, ingredientID, ingredientName, formatPrice):
-        super().__init__(self, self.__toppingCost, self.__toppingName, self.__toppingID)
-
-        self.__ingredientCost = ingredientCost
-        self.__ingredientID = ingredientID
-        self.__ingredientName = ingredientName
-        self.__formatPrice = formatPrice
-
-    def getIngredientCost(self):
-        return self.__ingredientCost
-    
-    def getIngredientID(self):
-        return self.__ingredientID
-    
-    def getIngredientName(self):
-        return self.__ingredientName
-    
-    def getFormatPrice(self):
-        return self.__formatPrice
-    
-    def displayFormatPrice(self):
-        print(self.__formatPrice)
-
-
-
-# class Employee:
-#     def __init__(self, employee_name, employee_age, employee_id, baseWage, hours_worked):
-#         self.__employee_name = employee_name
-#         self.__employee_age = employee_age
-#         self.__employee_id = employee_id
-#         self.__baseWage = baseWage
-#         self.hours_worked = hours_worked
-
-#     def work(self):
-#         self.hours_worked += <number of hours>
-    
-#     def get_paid(self):
-#         total_money = self.__baseWage * self.hours_worked
-#         return total_money
-
-class Interface:
-    def __init__(self, pizza_menu, current_toppings, extra_toppings_options):
-        self.__pizza_menu = pizza_menu
-        self.__current_toppings = current_toppings
-        self.__extra_toppings_options = extra_toppings_options
-
-    def accept_input(self):
-        return None
-    
-    def displayReceipt(self):
-        print
-    
-class OrderingSystem(Interface):
-    def __init__(self, txt_file):
-        super().__init__(self.__pizza_menu, self.__current_toppings, self.__extra_toppings_options)
-        self.__txt_file = ""
-    
-    def writeToFile(self):
-        text_file = self.__txt_file
-        # text_file += <finalised order>
-
-    def place_order(self):
-        return None
 
 def main():
     print("---Welcome to the Pizza Shop---")
