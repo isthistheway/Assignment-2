@@ -11,7 +11,19 @@ class Ingredient:
         self.__Cost = Cost
         self.__Name = Name
         self.__formatPrice = formatPrice
+        # initialising the pizza_shop variable for the 
+        # Ingredient --> PizzaShop aggregation
+        self.__pizza_shop = None
 
+    # aggregation relationship between Ingredient and PizzaShop
+    # (Ingredient --> PizzaShop)
+    def PizzaShop_association(self, pizza_shop):
+        self.__pizza_shop = pizza_shop
+    # getter method for the private variable pizza_shop
+    # for the Ingredient --> PizzaShop aggregation
+    def get_pizza_shop(self):
+        return self.__pizza_shop
+    
     def getCost(self):
         return self.__Cost
     
@@ -38,6 +50,7 @@ class PizzaBase(Ingredient):
             self.__size = 14
         else:
             print("Invalid input: can only choose 1, 2 or 3.")
+
     def getPizzaSize(self):
         return self.__pizzaSize
     
@@ -60,12 +73,11 @@ class PizzaBase(Ingredient):
         return "PizzaBase" + self.__Name() + " " + str(self.__size)
 
 class Pizza(PizzaBase):
-    super().__init__(self, self.price)
-    def __init__(self, toppings, crusts, price):
-        super().__init__(self, self.)
-        self.__toppings = []
-        self.__crusts = crusts
+    def __init__(self, price):
+        super().__init__(self, self.__pizzaSize, self.__baseType)
         self.__price = price
+        # self.__toppings = []
+        # self.__crusts = crusts
         self.size = "large"
         self.base = "thin crust"
 
@@ -94,10 +106,18 @@ class Pizza(PizzaBase):
 
 class PizzaShop:
     def __init__(self):
-        self.pizza_menu = PizzaMenu()
+        # self.pizza_menu = PizzaMenu() - FOR THIS LINE, INSERT 
+        # FUNCTION OR CODE THAT DISPLAYS THE MENU
         # initialise an empty dictionary for ingredients
         self.ingredients = {}
     
+    def add_ingredient(self, Name, Cost, formatPrice):
+        # association relationship going from PizzaShop to Ingredient
+        ingredient = Ingredient(Cost, Name, formatPrice)
+        self.ingredients[Name] = ingredient
+        # aggregation relationship between Ingredient and PizzaShop
+        # (Ingredient --> PizzaShop)
+        self.ingredients.append(ingredient)
     def load_menu(self):
         # load the ingredients first before the menu
         self.load_ingredients()
@@ -143,14 +163,14 @@ class PizzaShop:
         # split the line to separate the name and price by the dollar symbol - the name and price get put into a list 
         # with the split() function and can then be accessed with index positions and the $ sign is not included in 
         # the list
-        no_dollar_sign = lines.split("$")
+        split_lines = lines.split("$")
         # the name will always be [0] in the list and price will always be [1] in the list
         for eachLine in filename:
-            if len(no_dollar_sign) == 2:
+            if len(split_lines) == 2:
                 # set the ingredient name to the name
-                name = no_dollar_sign[0].strip()
+                name = split_lines[0].strip()
                 # set the ingredient price to the price
-                price = float(no_dollar_sign[1].strip())
+                price = float(split_lines[1].strip())
                 # checks to see if the line starts with the word base and if it does, 
                 # it makes it a PizzaBase
                 if len(name) >= 4 and name[:4].lower() == "base":
@@ -158,9 +178,10 @@ class PizzaShop:
                 else:
                     # if the line doesn't start with the word base, it makes it a
                     # Food object with the name and price
-                    ingredient = Food(name, price)
+                    ingredient = Pizza(name, price)
                 
                 ingredients.append(ingredient)
+
                 self.ingredients[name] = ingredient
         # close the ingredients.txt file
         open_ingredients.close()
