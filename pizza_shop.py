@@ -12,7 +12,7 @@ class Ingredient:
         self.__Name = Name
         self.__formatPrice = formatPrice
         # initialising the pizza_shop variable for the 
-        # Ingredient --> PizzaShop aggregation
+        # Ingredient --> PizzaShop aggregation relationship
         self.__pizza_shop = None
 
     # aggregation relationship between Ingredient and PizzaShop
@@ -36,74 +36,6 @@ class Ingredient:
     def displayFormatPrice(self):
         return f"{self.__formatPrice}"
 
-class PizzaBase(Ingredient):
-    def __init__(self, pizzaSize, baseType, user_input):
-        super().__init__(self, self.__Cost, self.__Name, self.__formatPrice)
-        self.__pizzaSize = pizzaSize
-        self.__baseType = baseType
-
-        if user_input == 1:
-            self.__size = 10
-        elif user_input == 2:
-            self.__size = 12
-        elif user_input == 3:
-            self.__size = 14
-        else:
-            print("Invalid input: can only choose 1, 2 or 3.")
-
-    def getPizzaSize(self):
-        return self.__pizzaSize
-    
-    def calcSquareInch(self):
-        return None
-    
-    def calcCostPerSquareInch(self):
-        return None
-    
-    def setSize(self, newSize):
-        self.__pizzaSize = newSize
-
-    def getBase(self):
-        return self.__baseType
-    
-    def setBase(self, newBase):
-        self.__baseType = newBase
-
-    def __str__(self):
-        return "PizzaBase" + self.__Name() + " " + str(self.__size)
-
-class Pizza(PizzaBase):
-    def __init__(self, price):
-        super().__init__(self, self.__pizzaSize, self.__baseType)
-        self.__price = price
-        # self.__toppings = []
-        # self.__crusts = crusts
-        self.size = "large"
-        self.base = "thin crust"
-
-    # getter method for the private variable self.__price
-    def getPrice(self):
-        return self.__price
-    
-    def setCrusts(self):
-        self.__crusts = "thin curst"
-
-    def getCrusts(self):
-        return self.__crusts
-    
-    def setTopping(self):
-        self.__toppings = []
-
-    def addTopping(self, topping):
-        self.__toppings.append(topping)
-
-    def removeToppings(self, topping):
-        self.__toppings.remove(topping)
-
-    # getter method for the private variable self.__toppings
-    def getToppings(self):
-        return self.__toppings
-
 class PizzaShop:
     def __init__(self):
         # self.pizza_menu = PizzaMenu() - FOR THIS LINE, INSERT 
@@ -112,12 +44,16 @@ class PizzaShop:
         self.ingredients = {}
     
     def add_ingredient(self, Name, Cost, formatPrice):
-        # association relationship going from PizzaShop to Ingredient
+        # association relationship (PizzaShop --> Ingredient)
         ingredient = Ingredient(Cost, Name, formatPrice)
-        self.ingredients[Name] = ingredient
         # aggregation relationship between Ingredient and PizzaShop
         # (Ingredient --> PizzaShop)
-        self.ingredients.append(ingredient)
+        ingredient.PizzaShop_association(self)
+        # adds an ingredient to the self.ingredients dictionary
+        # using Name as a unique identifier parameter for each item 
+        # in the dictionary
+        self.ingredients[Name] = ingredient
+        
     def load_menu(self):
         # load the ingredients first before the menu
         self.load_ingredients()
@@ -190,6 +126,70 @@ class PizzaShop:
 
     def __str__(self):
         return f"Pizza Base: {self.name}, Price: ${self.price:.2f}"
+    
+class PizzaBase(Ingredient):
+    def __init__(self, pizzaSize, baseType, user_input):
+        super().__init__(self, self.__Cost, self.__Name, self.__formatPrice)
+        self.__pizzaSize = pizzaSize
+        self.__baseType = ["deep pan", "cheese crust", "thin crust"]
+
+        if user_input == 1:
+            self.__size = 10
+        elif user_input == 2:
+            self.__size = 12
+        elif user_input == 3:
+            self.__size = 14
+        else:
+            print("Invalid input: can only choose 1, 2 or 3.")
+
+    def getPizzaSize(self):
+        return self.__pizzaSize
+    
+    def calcSquareInch(self):
+        return None
+    
+    def calcCostPerSquareInch(self):
+        return None
+    
+    def setSize(self, newSize):
+        self.__pizzaSize = newSize
+
+    def getBase(self):
+        return self.__baseType
+    
+    def setBase(self, newBase):
+        self.__baseType = newBase
+
+    def __str__(self):
+        return "PizzaBase" + self.__Name() + " " + str(self.__size)
+
+class Pizza(PizzaBase):
+    def __init__(self, price):
+        super().__init__(self, self.__pizzaSize, self.__baseType)
+        self.__price = price
+        # self.__toppings = []
+        # self.__crusts = crusts
+        self.size = "large"
+        self.base = 
+
+    # getter method for the private variable self.__price
+    def getPrice(self):
+        return self.__price
+    
+    def setTopping(self):
+        self.__toppings = []
+
+    def addTopping(self, topping):
+        self.__toppings.append(topping)
+
+    def removeToppings(self, topping):
+        self.__toppings.remove(topping)
+
+    # getter method for the private variable self.__toppings
+    def getToppings(self):
+        return self.__toppings
+
+
 
 def main():
     print("---Welcome to the Pizza Shop---")
