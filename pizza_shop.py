@@ -194,7 +194,6 @@ class Pizza(PizzaBase):
         # self.__toppings = []
         # self.__crusts = crusts
         self.size = "large"
-        self.base = 
 
     # getter method for the private variable self.__price
     def getPrice(self):
@@ -228,7 +227,8 @@ class Pizza(PizzaBase):
 def main():
     print("---Welcome to the Pizza Shop---")
     print()
-    # customer_name_input = input("Please enter your name to get started!")
+    # customer_name_input = input("Please enter your name to get started: ")
+
     # testing the PizzaBase class
     user_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
     b = PizzaBase("cheesy crust", 14, "pepperoni", user_input)
