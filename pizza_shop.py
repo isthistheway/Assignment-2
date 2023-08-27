@@ -37,7 +37,14 @@ class Ingredient:
     def clone(self):
         cloned_ingredients = Ingredient(self.__Cost, self.__Name, self.__formatPrice)
         return cloned_ingredients
-    
+    # equals method to check whether other is equal to the given self argument and whether
+    # self and other are the same type of variable
+    def equals(self, other):
+        if self == other and type(self) == type(other):
+            return True
+        else:
+            return False
+        
     def displayFormatPrice(self):
         return f"{self.__formatPrice}"
 
@@ -169,6 +176,14 @@ class PizzaBase(Ingredient):
         cloned_pizza_base = PizzaBase(self.__pizzaSize, self.__baseType, user_input)
         return cloned_pizza_base
     
+    # equals method to check whether other is equal to the given self argument and whether
+    # self and other are the same type of variable
+    def equals(self, other):
+        if self == other and type(self) == type(other):
+            return True
+        else:
+            return False
+        
     def __str__(self):
         return "PizzaBase" + self.__Name() + " " + str(self.__size)
 
@@ -197,6 +212,15 @@ class Pizza(PizzaBase):
     def clone(self):
         cloned_pizza = Pizza(self.__price)
         return cloned_pizza
+    
+    # equals method to check whether other is equal to the given self argument and whether
+    # self and other are the same type of variable
+    def equals(self, other):
+        if self == other and type(self) == type(other):
+            return True
+        else:
+            return False
+        
     # getter method for the private variable self.__toppings
     def getToppings(self):
         return self.__toppings
