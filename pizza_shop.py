@@ -32,6 +32,11 @@ class Ingredient:
     
     def getFormatPrice(self):
         return self.__formatPrice
+    # clone method to return a copy of the ingredients used in a pizza or the additional
+    # toppings selected by the customer
+    def clone(self):
+        cloned_ingredients = Ingredient(self.__Cost, self.__Name, self.__formatPrice)
+        return cloned_ingredients
     
     def displayFormatPrice(self):
         return f"{self.__formatPrice}"
@@ -159,7 +164,11 @@ class PizzaBase(Ingredient):
     
     def setBase(self, newBase):
         self.__baseType = newBase
-
+    # clone method to return a copy of the pizza base
+    def clone(self):
+        cloned_pizza_base = PizzaBase(self.__pizzaSize, self.__baseType, user_input)
+        return cloned_pizza_base
+    
     def __str__(self):
         return "PizzaBase" + self.__Name() + " " + str(self.__size)
 
@@ -184,12 +193,13 @@ class Pizza(PizzaBase):
 
     def removeToppings(self, topping):
         self.__toppings.remove(topping)
-
+    # clone method to create a copy of the pizza
+    def clone(self):
+        cloned_pizza = Pizza(self.__price)
+        return cloned_pizza
     # getter method for the private variable self.__toppings
     def getToppings(self):
         return self.__toppings
-
-
 
 def main():
     print("---Welcome to the Pizza Shop---")
