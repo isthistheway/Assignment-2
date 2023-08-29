@@ -105,15 +105,17 @@ class PizzaShop:
         # make the ingredient list an empty list
         ingredients = []
         # read every line of the text file and return it as a list of strings
-        lines = open_ingredients.readlines()
-        # remove any blank space characters or extra spaces
-        lines = lines.strip()
-        # split the line to separate the name and price by the dollar symbol - the name and price get put into a list 
-        # with the split() function and can then be accessed with index positions and the $ sign is not included in 
-        # the list
-        split_lines = lines.split("$")
-        # the name will always be [0] in the list and price will always be [1] in the list
-        for eachLine in filename:
+        
+        for eachLine in open_ingredients:
+            lines = open_ingredients.readlines()
+
+            print(lines)
+            # remove any blank space characters or extra spaces
+            lines = lines.strip()
+            # split the line to separate the name and price by the dollar symbol - the name and price get put into a list 
+            # with the split() function and can then be accessed with index positions and the $ sign is not included in 
+            # the list
+            split_lines = lines.split("$")
             if len(split_lines) == 2:
                 # set the ingredient name to the name
                 name = split_lines[0].strip()
@@ -123,9 +125,13 @@ class PizzaShop:
                 # it makes it a PizzaBase
                 if len(name) >= 4 and name[:4].lower() == "base":
                     ingredient = PizzaBase(name, price)
-                else:
-                    # if the line doesn't start with the word base, it makes it a
-                    # Food object with the name and price
+                else:        
+                    # composition relationship between PizzaShop and Pizza
+                    # Pizza --> PizzaShop
+                    # an instance of the Pizza class is created within the PizzaShop
+                    # class and is then appended to the ingredients list as a single list item
+                    ## if the line doesn't start with the word base, it makes it a
+                    ## Pizza object with the name and price
                     ingredient = Pizza(name, price)
                 
                 ingredients.append(ingredient)
@@ -136,12 +142,16 @@ class PizzaShop:
 
         return ingredients
 
+    # composition relationshi between PizzaShop and PizzaBase
+    # PizzaBase --> PizzaShop
+
+
     def __str__(self):
         return f"Pizza Base: {self.name}, Price: ${self.price:.2f}"
     
 class PizzaBase(Ingredient):
-    def __init__(self, pizzaSize, baseType, user_input):
-        super().__init__(self, self.__Cost, self.__Name, self.__formatPrice)
+    def __init__(self, pizzaSize, baseType, user_input, price):
+        super().__init__(price, baseType, "$" + str(price))
         self.__pizzaSize = pizzaSize
         self.__baseType = ["deep pan", "cheese crust", "thin crust"]
 
@@ -172,6 +182,7 @@ class PizzaBase(Ingredient):
     def setBase(self, newBase):
         self.__baseType = newBase
     # clone method to return a copy of the pizza base
+
     def clone(self):
         cloned_pizza_base = PizzaBase(self.__pizzaSize, self.__baseType, user_input)
         return cloned_pizza_base
@@ -185,7 +196,7 @@ class PizzaBase(Ingredient):
             return False
         
     def __str__(self):
-        return "PizzaBase" + self.__Name() + " " + str(self.__size)
+        return "PizzaBase" + self.getName() + " " + str(self.__size)
 
 class Pizza(PizzaBase):
     def __init__(self, price):
@@ -231,15 +242,14 @@ def main():
 
     # testing the PizzaBase class
     user_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
-    b = PizzaBase("cheesy crust", 14, "pepperoni", user_input)
+    b = PizzaBase( 14, "cheese crust", user_input, 2.0)
     print(b)
-    print(b.get_name())
-    b.set_name("thin crust")
+    print(b.getName())
     print(b)
-    print(b.get_name())
+    print(b.getName())
     # testing the PizzaShop class
     print()
-    pizza_shop = PizzaShop("vlad")
+    pizza_shop = PizzaShop()
     pizza_shop.load_menu()
     pizza_shop.load_ingredients()
     print(pizza_shop)

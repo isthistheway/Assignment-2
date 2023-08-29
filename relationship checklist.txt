@@ -1,0 +1,9 @@
+
+# PizzaShop --> Ingredient association
+# Ingredient --> PizzaShop aggregation
+PizzaBase --> PizzaShop composition
+# PizzaBase --> Ingredient inheritance
+Ingredient --> PizzaBase aggregation
+# Pizza --> PizzaBase inheritance
+PizzaBase --> Pizza composition
+Pizza --> PizzaShop composition
