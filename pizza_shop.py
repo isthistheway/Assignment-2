@@ -49,11 +49,16 @@ class Ingredient:
         return f"{self.__formatPrice}"
 
 class PizzaShop:
-    def __init__(self):
+    # PizzaBase's attributes are defined in PizzaShop's init method for the 
+    # PizzaBase --> PizzaShop composition relationship
+    def __init__(self, pizzaSize, baseType, user_input, price):
         # self.pizza_menu = PizzaMenu() - FOR THIS LINE, INSERT 
         # FUNCTION OR CODE THAT DISPLAYS THE MENU
         # initialise an empty dictionary for ingredients
         self.ingredients = {}
+        # PizzaBase --> PizzaShop composition relationship
+        # an instance of PizzaBase is created in the init method
+        self.pizzaBase = PizzaBase(pizzaSize, baseType, user_input, price)
     
     def add_ingredient(self, Name, Cost, formatPrice):
         # association relationship (PizzaShop --> Ingredient)
@@ -124,6 +129,7 @@ class PizzaShop:
                 # checks to see if the line starts with the word base and if it does, 
                 # it makes it a PizzaBase
                 if len(name) >= 4 and name[:4].lower() == "base":
+                    # PizzaBase --> PizzaShop composition relationship
                     ingredient = PizzaBase(name, price)
                 else:        
                     # composition relationship between PizzaShop and Pizza
