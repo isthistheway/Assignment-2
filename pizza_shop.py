@@ -14,11 +14,17 @@ class Ingredient:
         # initialising the pizza_shop variable for the 
         # Ingredient --> PizzaShop aggregation relationship
         self.__pizza_shop = None
-
     # aggregation relationship between Ingredient and PizzaShop
     # (Ingredient --> PizzaShop)
-    def PizzaShop_association(self, pizza_shop):
+    def PizzaShop_aggregation(self, pizza_shop):
         self.__pizza_shop = pizza_shop
+    # aggregation relationship between Ingredient and PizzaBase
+    # Ingredient --> PizzaBase
+    def PizzaBase_aggregation(self, pizza_base):
+        self.__pizza_base = pizza_base
+    # getter method for self.__pizza_base
+    def get_pizza_base(self):
+        return self.__pizza_base
     # getter method for the private variable pizza_shop
     # for the Ingredient --> PizzaShop aggregation
     def get_pizza_shop(self):
@@ -60,17 +66,20 @@ class PizzaShop:
         # an instance of PizzaBase is created in the init method
         self.pizzaBase = PizzaBase(pizzaSize, baseType, user_input, price)
     
-    def add_ingredient(self, Name, Cost, formatPrice):
+    def add_ingredient_PizzaShop_aggregation(self, Name, Cost, formatPrice):
         # association relationship (PizzaShop --> Ingredient)
         ingredient = Ingredient(Cost, Name, formatPrice)
         # aggregation relationship between Ingredient and PizzaShop
         # (Ingredient --> PizzaShop)
-        ingredient.PizzaShop_association(self)
+        ingredient.PizzaShop_aggregation(self)
         # adds an ingredient to the self.ingredients dictionary
         # using Name as a unique identifier parameter for each item 
         # in the dictionary
         self.ingredients[Name] = ingredient
-        
+    
+    def add_ingredient_PizzaBase_aggregation(self, ingredient):
+        self.__ingredients.append(ingredient)
+        ingredient.PizzaBase_aggregation(self)
     def load_menu(self):
         # load the ingredients first before the menu
         self.load_ingredients()
