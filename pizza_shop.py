@@ -298,7 +298,7 @@ def main():
             print(f"Welcome back to the Pizza Shop, {customer_name}!")
             order = Order(customer_name)
 
-        elif choice_selection == 2 and order == None:
+        #elif choice_selection == 2 and order == None:
 
     
 

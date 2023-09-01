@@ -161,31 +161,30 @@ class PizzaShop:
     
 class PizzaBase(Ingredient):
     def __init__(self, pizzaSize, baseType, user_input, price):
-        pizzaSize = int(input("Enter the pizza size (1 = small, 2 = medium, 3 = large): "))
+        pizzaSize_input = int(input("Enter the pizza size (small = 10 inches, medium = 12 inches, large = 14 inches): "))
         baseType = input("Enter the base type: ")
-        price = float(input("Enter the price: "))
         super().__init__(price, baseType, "$" + str(price))
         self.__pizzaSize = pizzaSize
         self.__baseType = ["deep pan", "cheese crust", "thin crust"]
 
-        if user_input == 1:
-            self.__size = 10
-        elif user_input == 2:
-            self.__size = 12
-        elif user_input == 3:
-            self.__size = 14
+        if pizzaSize_input == "small":
+            self.__pizzaSize = 10
+        elif pizzaSize_input == "medium":
+            self.__pizzaSize = 12
+        elif pizzaSize_input == "large":
+            self.__pizzaSize = 14
         else:
-            print("Invalid input: can only choose 1, 2 or 3.")
+            print("Invalid input: You may only choose small, medium or large.")
 
     def getPizzaSize(self):
         return self.__pizzaSize
     
-    def calcSquareInch(self):
-        return None
-    
+    def setDiameter(self, pizzaSize):
+
     def calcCostPerSquareInch(self):
-        return None
-    
+        cost_per_square_inch = (self.__Cost/3.14) * (self.__pizzaSize/2)^2
+        return cost_per_square_inch
+
     def setSize(self, newSize):
         self.__pizzaSize = newSize
 
@@ -235,7 +234,6 @@ class Pizza(PizzaBase):
     def clone(self):
         cloned_pizza = Pizza(self.__price)
         return cloned_pizza
-    
     # equals method to check whether other is equal to the given self argument and whether
     # self and other are the same type of variable
     def equals(self, other):
@@ -272,11 +270,6 @@ class Order:
         except IndexError as e:
             print("Error: ", e)
 
-
-
-    
-
-    
 def display_menu():
     print("1. New Customer")
     print("2. Order Pizza")
@@ -309,6 +302,7 @@ def main():
             if customer_name is None:
                 print("Must enter customer name before ordering.")
             else:
+
                 # Call the method to select a Pizza
                 # Handle exceptions for invalid pizza name
                 # Display Pizza Submenu
