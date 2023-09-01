@@ -86,11 +86,11 @@ class PizzaShop:
         open_menu = open("menu.txt", "r")
         # opens the menu.txt file for reading and all the text file contents
         # a list of strings
-        lines = open_menu.readlines()        
+        lines = open_menu.readlines()
+        
         # makes each line a list with the name of the pizza and all the ingredients as 2 total
         # list elements for each list
         for eachLine in lines:
-            eachLine = eachLine.strip()
             pizza_info = eachLine.split(' $')
             print(pizza_info)
             name = pizza_info[0]
@@ -161,6 +161,9 @@ class PizzaShop:
     
 class PizzaBase(Ingredient):
     def __init__(self, pizzaSize, baseType, user_input, price):
+        pizzaSize = int(input("Enter the pizza size (1 = small, 2 = medium, 3 = large): "))
+        baseType = input("Enter the base type: ")
+        price = float(input("Enter the price: "))
         super().__init__(price, baseType, "$" + str(price))
         self.__pizzaSize = pizzaSize
         self.__baseType = ["deep pan", "cheese crust", "thin crust"]
@@ -250,13 +253,17 @@ class Order:
         self.customer_name = customer_name
         self.pizzas = []
 
-    def customer_name_input(self):
+    def customer_name_input():
         customer_name = input("Please enter your name: ")
         return customer_name
     # add pizzas to the self._pizzas list (which is the receipt)
     def add_pizza(self, pizza):
         self.pizzas.append(pizza)
 
+    @staticmethod
+    def customer_name_input():
+        return input("Please enter your name: ")
+    
     def create_receipt(self):
         # exception handling to check if any pizzas have been ordered so far
         try:
@@ -265,12 +272,17 @@ class Order:
         except IndexError as e:
             print("Error: ", e)
 
+
+
+    
+
+    
 def display_menu():
-        print("1. New Customer")
-        print("2. Order Pizza")
-        print("3. Display Orders")
-        print("4. Finalise Orders")
-        print("5. Exit")
+    print("1. New Customer")
+    print("2. Order Pizza")
+    print("3. Display Orders")
+    print("4. Finalise Orders")
+    print("5. Exit")
 
 def main():
     print("---Welcome to the Pizza Shop---")
@@ -281,7 +293,7 @@ def main():
     choice_selection = 0
 
     while choice_selection != 5:
-        display_menu    
+        display_menu()
         try:
             choice_selection = int(input("How may I help you: "))
         except ValueError:
@@ -289,35 +301,38 @@ def main():
             choice_selection = 0
             continue
 
-    
-        if choice_selection == 1 and customer_name == None:
+        if choice_selection == 1:
             customer_name = Order.customer_name_input()
             print(f"Welcome to the Pizza Shop, {customer_name}!")
-            order = Order(customer_name)   
-        elif choice_selection and customer_name != None:
-            print(f"Welcome back to the Pizza Shop, {customer_name}!")
             order = Order(customer_name)
-
-        elif choice_selection == 2 and order == None:
-
-    
-
-    
-    # testing the PizzaBase class
-    size_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
-    self.__pizzaSize = size_input
-    b = PizzaBase(size_input, "cheese crust", size_input, 2.0)
-    print(b)
-    print(b.getName())
-    print(b)
-    print(b.getName())
-    # testing the PizzaShop class
-    print()
-    pizza_shop = PizzaShop()
-    pizza_shop.load_menu()
-    pizza_shop.load_ingredients()
-    print(pizza_shop)
-    p = PizzaShop()
+        elif choice_selection == 2:
+            if customer_name is None:
+                print("Must enter customer name before ordering.")
+            else:
+                # Call the method to select a Pizza
+                # Handle exceptions for invalid pizza name
+                # Display Pizza Submenu
+                # ...
+                pass  # Placeholder for actual logic
+        elif choice_selection == 3:
+            if order is None:
+                print("No orders have been placed yet.")
+            else:
+                # Display the Order so far
+                # ...
+                pass  # Placeholder for actual logic
+        elif choice_selection == 4:
+            if order is None:
+                print("No orders to finalize.")
+            else:
+                # Save the Order's receipt
+                # Create a new empty Order
+                # ...
+                pass  # Placeholder for actual logic
+        elif choice_selection == 5:
+            print("Have a good day :)")
+        else:
+            print("Please only enter choices 1 - 5")
 
 if __name__ == '__main__':
     main()
