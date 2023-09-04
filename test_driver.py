@@ -8,12 +8,12 @@
 import unittest
 import pizza_shop
 
-# class PizzaBaseTest(unittest.TestCase):
-#     def test_get_diameter(self):
-#         base = pizza_shop.PizzaBase("thin crust", 8, 14)
-#         self.assertEqual(14, diameter)
+class PizzaBaseTest(unittest.TestCase):
+    def test_get_diameter(self):
+        base = pizza_shop.PizzaBase("thin crust", 8, 14, 16)
+        self.assertEqual(14, self.__pizzaSize)
 
-# unittest.main()
+unittest.main()
 
 def add(x, y):
     return x, y

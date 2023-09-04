@@ -58,12 +58,12 @@ class Ingredient:
 class PizzaShop:
     # PizzaBase's attributes are defined in PizzaShop's init method for the 
     # PizzaBase --> PizzaShop composition relationship
-    def __init__(self, pizzaSize, baseType, user_input, price):
+    def __init__(self, pizzaSize, baseType, size_input, price):
         # initialise an empty dictionary for ingredients
         self.ingredients = {}
         # PizzaBase --> PizzaShop composition relationship
         # an instance of PizzaBase is created in the init method
-        self.pizzaBase = PizzaBase(pizzaSize, baseType, user_input, price)
+        self.pizzaBase = PizzaBase(pizzaSize, baseType, size_input, price)
     # Ingredient --> PizzaShop aggregation relationship method
     def add_ingredient_PizzaShop_aggregation(self, Name, Cost, formatPrice):
         # association relationship (PizzaShop --> Ingredient)
@@ -77,7 +77,7 @@ class PizzaShop:
         self.ingredients[Name] = ingredient
     
     def add_ingredient_PizzaBase_aggregation(self, ingredient):
-        self.__ingredients.append(ingredient)
+        self.ingredients.append(ingredient)
         ingredient.PizzaBase_aggregation(self)
     def load_menu(self):
         # load the ingredients first before the menu
@@ -160,28 +160,26 @@ class PizzaShop:
         return f"Pizza Base: {self.name}, Price: ${self.price:.2f}"
     
 class PizzaBase(Ingredient):
-    def __init__(self, pizzaSize, baseType, user_input, price):
+    def __init__(self, pizzaSize, baseType, size_input, price):
         super().__init__(price, baseType, "$" + str(price))
         self.__pizzaSize = pizzaSize
         self.__baseType = ["deep pan", "cheese crust", "thin crust"]
 
-        if user_input == 1:
+        if size_input == 1:
             self.__size = 10
-        elif user_input == 2:
+        elif size_input == 2:
             self.__size = 12
-        elif user_input == 3:
+        elif size_input == 3:
             self.__size = 14
         else:
             print("Invalid input: can only choose 1, 2 or 3.")
 
     def getPizzaSize(self):
         return self.__pizzaSize
-    
-    def calcSquareInch(self):
-        return None
-    
+   
     def calcCostPerSquareInch(self):
-        return None
+        cost_per_square_inch = float((self.__Cost/3.14) * (self.__size/2)^2)
+        return cost_per_square_inch
     
     def setSize(self, newSize):
         self.__pizzaSize = newSize
@@ -288,7 +286,6 @@ def main():
             print("Error: Must enter an integer between 1 and 5.")
             choice_selection = 0
             continue
-
     
         if choice_selection == 1 and customer_name == None:
             customer_name = Order.customer_name_input()
@@ -305,7 +302,6 @@ def main():
     
     # testing the PizzaBase class
     size_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
-    self.__pizzaSize = size_input
     b = PizzaBase(size_input, "cheese crust", size_input, 2.0)
     print(b)
     print(b.getName())
