@@ -248,7 +248,14 @@ class Order:
         self.customer_name = customer_name
         self.pizzas = []
 
-    def customer_name_input(self):
+    def display_menu():
+        print("1. New Customer")
+        print("2. Order Pizza")
+        print("3. Display Orders")
+        print("4. Finalise Orders")
+        print("5. Exit")
+
+    def customer_name_input():
         customer_name = input("Please enter your name: ")
         return customer_name
     # add pizzas to the self._pizzas list (which is the receipt)
@@ -263,12 +270,7 @@ class Order:
         except IndexError as e:
             print("Error: ", e)
 
-def display_menu():
-        print("1. New Customer")
-        print("2. Order Pizza")
-        print("3. Display Orders")
-        print("4. Finalise Orders")
-        print("5. Exit")
+
 
 def main():
     print("---Welcome to the Pizza Shop---")
@@ -279,7 +281,7 @@ def main():
     choice_selection = 0
 
     while choice_selection != 5:
-        display_menu    
+        Order.display_menu()   
         try:
             choice_selection = int(input("How may I help you: "))
         except ValueError:
@@ -296,11 +298,10 @@ def main():
             order = Order(customer_name)
 
         #elif choice_selection == 2 and order == None:
-
-    
-
     
     # testing the PizzaBase class
+
+    Order.display_menu()
     size_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
     b = PizzaBase(size_input, "cheese crust", size_input, 2.0)
     print(b)
