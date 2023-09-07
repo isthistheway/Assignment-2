@@ -274,7 +274,7 @@ def main():
 
     choice_selection = 0
 
-    pizza_shop = PizzaShop()
+    # pizza_shop = PizzaShop()
 
     while choice_selection != 5:
         Order.display_menu()   
@@ -295,8 +295,24 @@ def main():
             print(f"Welcome to the Pizza Shop, {customer_name}!")
             order = Order(customer_name)  
         elif choice_selection == 2:
-            PizzaShop.load_menu()
-    
+            while choice_selection == 2:  # Add a loop here
+                print("Menu:")
+                with open("menu.txt", "r") as menu_file:
+                    menu_lines = menu_file.readlines()
+                    for line in menu_lines:
+                        print(line.strip())
+                pizza_name = input("Enter the name of the pizza you want: ")
+                found_pizza = False
+                with open("menu.txt", "r") as menu_file:
+                    for line in menu_file:
+                        if pizza_name.lower() in line.lower():
+                            print(line.strip())
+                            found_pizza = True
+                            break
+                if not found_pizza:
+                    print(f"Sorry, {pizza_name} not found in the menu.")
+                else:
+                    choice_selection = 0
     # testing the PizzaBase class
 
     # Order.display_menu()
