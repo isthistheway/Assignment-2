@@ -95,7 +95,6 @@ class PizzaShop:
             print(pizza_info)
             name = pizza_info[0]
             string_price = pizza_info[1][:2]
-            index = 0
             print(name)
             price = float(string_price)
             print(string_price)
@@ -160,17 +159,16 @@ class PizzaShop:
         return f"Pizza Base: {self.name}, Price: ${self.price:.2f}"
     
 class PizzaBase(Ingredient):
-    def __init__(self, pizzaSize, baseType, size_input, price):
-        super().__init__(price, baseType, "$" + str(price))
+    def __init__(self, pizzaSize, baseType, size_input, Cost):
+        super().__init__(Cost, baseType, "$" + str(Cost))
         self.__pizzaSize = pizzaSize
         self.__baseType = ["deep pan", "cheese crust", "thin crust"]
-
         if size_input == 1:
-            self.__size = 10
+            self.__pizzaSize = 10
         elif size_input == 2:
-            self.__size = 12
+            self.__pizzaSize = 12
         elif size_input == 3:
-            self.__size = 14
+            self.__pizzaSize = 14
         else:
             print("Invalid input: can only choose 1, 2 or 3.")
 
@@ -192,7 +190,7 @@ class PizzaBase(Ingredient):
     # clone method to return a copy of the pizza base
 
     def clone(self):
-        cloned_pizza_base = PizzaBase(self.__pizzaSize, self.__baseType, user_input)
+        cloned_pizza_base = PizzaBase(self.__pizzaSize, self.__baseType, size_input=13)
         return cloned_pizza_base
     
     # equals method to check whether other is equal to the given self argument and whether
@@ -210,13 +208,10 @@ class Pizza(PizzaBase):
     def __init__(self, price):
         super().__init__(self, self.__pizzaSize, self.__baseType)
         self.__price = price
-        # self.__toppings = []
-        # self.__crusts = crusts
-        self.size = "large"
 
     # getter method for the private variable self.__price
     def getPrice(self):
-        return self.__price
+        return self.price
     
     def setTopping(self):
         self.__toppings = []
@@ -228,7 +223,7 @@ class Pizza(PizzaBase):
         self.__toppings.remove(topping)
     # clone method to create a copy of the pizza
     def clone(self):
-        cloned_pizza = Pizza(self.__price)
+        cloned_pizza = Pizza(self.price)
         return cloned_pizza
     
     # equals method to check whether other is equal to the given self argument and whether
@@ -270,51 +265,54 @@ class Order:
         except IndexError as e:
             print("Error: ", e)
 
-
-
 def main():
     print("---Welcome to the Pizza Shop---")
     print()
+    
     customer_name = None
     order = None
 
     choice_selection = 0
 
+    pizza_shop = PizzaShop()
+
     while choice_selection != 5:
         Order.display_menu()   
         try:
             choice_selection = int(input("How may I help you: "))
-        except ValueError:
-            print("Error: Must enter an integer between 1 and 5.")
+            if choice_selection < 1 or choice_selection > 5:
+                print("Error: Input must be between 1 and 5")
+        except ValueError as e:
+            if type(choice_selection) != int:
+                continue
+            else:
+                print("Error: Input value must be an integer")
             choice_selection = 0
             continue
-    
-        if choice_selection == 1 and customer_name == None:
+        
+        if choice_selection == 1 and customer_name is None:
             customer_name = Order.customer_name_input()
             print(f"Welcome to the Pizza Shop, {customer_name}!")
-            order = Order(customer_name)   
-        elif choice_selection and customer_name != None:
-            print(f"Welcome back to the Pizza Shop, {customer_name}!")
-            order = Order(customer_name)
-
-        #elif choice_selection == 2 and order == None:
+            order = Order(customer_name)  
+        elif choice_selection == 2:
+            PizzaShop.load_menu()
     
     # testing the PizzaBase class
 
-    Order.display_menu()
-    size_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
-    b = PizzaBase(size_input, "cheese crust", size_input, 2.0)
-    print(b)
-    print(b.getName())
-    print(b)
-    print(b.getName())
-    # testing the PizzaShop class
-    print()
-    pizza_shop = PizzaShop()
-    pizza_shop.load_menu()
-    pizza_shop.load_ingredients()
-    print(pizza_shop)
-    p = PizzaShop()
+    # Order.display_menu()
+    # size_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
+    # b = PizzaBase(size_input, "cheese crust", size_input, 2.0)
+    # print(b)
+    # print(b.getName())
+    # print(b)
+    # print(b.getName())
+    # # testing the PizzaShop class
+    # print()
+    # pizza_shop = PizzaShop()
+    # pizza_shop.load_menu()
+    # pizza_shop.load_ingredients()
+    # print(pizza_shop)
+    # p = PizzaShop()
 
 if __name__ == '__main__':
     main()
