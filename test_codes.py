@@ -3,6 +3,7 @@ open_menu = open("menu.txt", "r")
         # a list of strings
 lines = open_menu.readlines()        
 
+pizza_info_separated = []
 for eachLine in lines:
     eachLine = eachLine.strip()
     pizza_info = eachLine.split(' $')
@@ -12,6 +13,5 @@ for eachLine in lines:
     toppings = pizza_info[1][3:].split(", ")
 
     formatted_toppings = ", ".join(toppings)
-    
-    pizza_info_separated = f"{name}, large, thin crust ${price:.2f}:\n {formatted_toppings}"
-    print(pizza_info_separated)
+print(formatted_toppings)
+

@@ -93,12 +93,16 @@ class PizzaShop:
             toppings = pizza_info[1][3:].split(", ")
 
             formatted_toppings = ", ".join(toppings)
-            
+            pizza = Pizza(name, price)
+        
+            for topping in toppings:
+                pizza.addTopping(topping)
+        
+            pizza_info_separated.append(pizza)
             # full_pizza = f"{name}, large, thin crust ${price:.2f}:\n {formatted_toppings}"
             # pizza_info_separated.append(full_pizza)
             pizza_info_separated.append(Pizza(name, price))
             
-
         return pizza_info_separated
     
     def load_ingredients(self):
@@ -187,7 +191,7 @@ class PizzaBase(Ingredient):
     
     def set_size_string(self, newSize):
         sizes = {
-            "small": 10, 3 
+            "small": 10,
             "medium": 12, 
             "large": 14
         }
@@ -313,13 +317,30 @@ def main():
         elif choice_selection == 2:
             print("Menu:")
             menu_items = pizza_shop.load_menu()  # Get the menu items
-            print("H:U--", menu_items)
+            print("Menu items testing", menu_items)
+            for item in menu_items:
+                print(f"- {item.getName()} - Price: {item.getPrice():.2f}:")
+                # print(f"  " + ", ".join(item.getToppings()))
             which_pizza = input("Which pizza would you like?")
             for item in menu_items:
                 print("H:U--", item)
                 print(item.getName())
             if item.getName().lower() == which_pizza.lower():
                 Order.display_second_menu()
+                second_choice_selection = int(input("What would you like to do: "))
+                # while second_choice_selection != 6:
+                #     if second_choice_selection == 1:
+                #         change size
+                #     elif second_choice_selection == 2:
+                #         change pizza base
+                #     elif second_choice_selection == 3:
+                #         add topping
+                #     elif second_choice_selection == 4:
+                #         remove topping pop()
+                #     elif second_choice_selection == 5:
+                #         order
+                
+
         elif choice_selection == 3:
             # Display orders (pizzas in the order)
             if order is not None:
