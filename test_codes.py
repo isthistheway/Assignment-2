@@ -23,12 +23,12 @@ print(pizza_info)
 name = pizza_info[0]
 string_price = pizza_info[1][:2]
 index = 0
-#print(name)
+print(name)
 price = float(string_price)
-#print(string_price)
-toppings = pizza_info[1][3:]
-print(toppings)
-
+print(string_price)
+toppings = pizza_info[1][3:].split(", ")
+pizza_list = [name, price] + toppings
+print(pizza_list)
 # myList = []
 # myList.append(name)
 # print(myList)
