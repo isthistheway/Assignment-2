@@ -159,11 +159,11 @@ class PizzaBase(Ingredient):
         self.__pizzaSize = pizzaSize
         self.__baseType = ["deep pan", "cheese crust", "thin crust"]
 
-        if pizzaSize == 1:
+        if pizzaSize == "small":
             self.__pizzaSize = 10
-        elif pizzaSize == 2:
+        elif pizzaSize == "medium":
             self.__pizzaSize = 12
-        elif pizzaSize == 3:
+        elif pizzaSize == "large":
             self.__pizzaSize = 14
 
     def getPizzaSize(self):
@@ -172,7 +172,7 @@ class PizzaBase(Ingredient):
     def calcCostPerSquareInch(self):
         cost = float(self.getCost())
         pizza_size = float(self.__pizzaSize)
-        cost_per_square_inch = float((cost/3.14) * (pizza_size/2)**2)
+        cost_per_square_inch = float((cost/3.14) * ((pizza_size/2)**2))
         return cost_per_square_inch
     
     def setSize(self, newSize):

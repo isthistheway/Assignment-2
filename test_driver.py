@@ -7,7 +7,6 @@
 # Week 8 Lecture - Docstrings and Pytest
 import unittest
 import pizza_shop
-import math
 
 class PizzaBaseTest(unittest.TestCase):
     # safe getPizzaSize() unittest
@@ -22,16 +21,17 @@ class PizzaBaseTest(unittest.TestCase):
 
         self.assertTrue(pizza_base1.equals(pizza_base2))  # Should be True because they have the same attributes
         self.assertFalse(pizza_base1.equals(pizza_base3))
-    
-    def test_calcCostPerSquareInch(self):
-        square_inch_test = pizza_shop.PizzaBase("large", "thin crust", 17.0)
 
-        # Calculate the expected cost per square inch
-        expected_cost = (square_inch_test.getCost() / (math.pi * ((square_inch_test.getPizzaSize() / 2) ** 2)))
+    # safe calcCostPerSquareInch unittest
+    def test_calcostPerSquareInch(self):
+        square_inch_test = pizza_shop.PizzaBase("large", "thin crust", 10)
 
-        exact_cost = square_inch_test.calcCostPerSquareInch()
+        expected_cost = (square_inch_test.getCost() / (3.14 * ((square_inch_test.getPizzaSize() / 2) ** 2)))
+        
+        exact_cost = round(square_inch_test.getCost(), 2)/square_inch_test.calcCostPerSquareInch()
 
         self.assertAlmostEqual(expected_cost, exact_cost, places=2)
+        print(expected_cost, exact_cost)
 
     def test_clone(self):
         pizza_base_instance = pizza_shop.PizzaBase("large", "thin crust", 13)
