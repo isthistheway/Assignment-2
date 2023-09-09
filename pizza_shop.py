@@ -93,7 +93,7 @@ class PizzaShop:
             toppings = pizza_info[1][3:].split(", ")
 
             formatted_toppings = ", ".join(toppings)
-            pizza = Pizza(name, price)
+            pizza = Pizza(name, price, toppings)
         
             for topping in toppings:
                 pizza.addTopping(topping)
@@ -101,7 +101,7 @@ class PizzaShop:
             pizza_info_separated.append(pizza)
             # full_pizza = f"{name}, large, thin crust ${price:.2f}:\n {formatted_toppings}"
             # pizza_info_separated.append(full_pizza)
-            pizza_info_separated.append(Pizza(name, price))
+            pizza_info_separated.append(Pizza(name, price, toppings))
             
         return pizza_info_separated
     
@@ -216,10 +216,11 @@ class PizzaBase(Ingredient):
         return "PizzaBase" + self.getName() + " " + str(self.__pizzaSize)
 
 class Pizza(PizzaBase):
-    def __init__(self, name, price):
+    def __init__(self, name, price, toppings):
         super().__init__("large", "thin crust", 13.00)
         self.__price = price
         self.__name = name
+        self.__toppings = []
 
     def getName(self):
         return self.__name
@@ -234,7 +235,13 @@ class Pizza(PizzaBase):
         self.__toppings.append(topping)
 
     def removeToppings(self, topping):
-        self.__toppings.remove(topping)
+        if topping in self.__toppings:
+            self.__toppings.remove(topping)
+
+    # getter method for the private variable self.__toppings
+    def getToppings(self):
+        return self.__toppings
+    
     # clone method to create a copy of the pizza
     def clone(self):
         cloned_pizza = Pizza(self.price)
@@ -247,10 +254,6 @@ class Pizza(PizzaBase):
             return True
         else:
             return False
-        
-    # getter method for the private variable self.__toppings
-    def getToppings(self):
-        return self.__toppings
 
 class Order:
     def __init__(self, customer_name):
@@ -316,11 +319,12 @@ def main():
             order = Order(customer_name)  
         elif choice_selection == 2:
             print("Menu:")
-            menu_items = pizza_shop.load_menu()  # Get the menu items
-            print("Menu items testing", menu_items)
+            menu_items = pizza_shop.load_menu()
+            # print(menu_items)
+            # print("Menu items testing", menu_items)
             for item in menu_items:
                 print(f"- {item.getName()} - Price: {item.getPrice():.2f}:")
-                # print(f"  " + ", ".join(item.getToppings()))
+                print(f"  " + ", ".join(item.getToppings()))
             which_pizza = input("Which pizza would you like?")
             for item in menu_items:
                 print("H:U--", item)
