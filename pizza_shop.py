@@ -320,21 +320,116 @@ def main():
         elif choice_selection == 2:
             print("Menu:")
             menu_items = pizza_shop.load_menu()
-            # print(menu_items)
-            # print("Menu items testing", menu_items)
             for item in menu_items:
                 print(f"- {item.getName()} - Price: {item.getPrice():.2f}:")
                 print(f"  " + ", ".join(item.getToppings()))
             which_pizza = input("Which pizza would you like?")
-            for item in menu_items:
-                print("H:U--", item)
-                print(item.getName())
-            if item.getName().lower() == which_pizza.lower():
-                Order.display_second_menu()
-                second_choice_selection = int(input("What would you like to do: "))
-                # while second_choice_selection != 6:
-                #     if second_choice_selection == 1:
-                #         change size
+            pizza_selected = None
+
+            # Iterate through menu_items to find the selected pizza
+            try:
+                for item in menu_items:
+                    if item.getName().lower() == which_pizza.lower():
+                        pizza_selected = item
+            except ValueError:
+                print("Error occurred while processing your choice. Please try again.")
+
+            # Check if the pizza has been found
+            if pizza_selected:
+                print(f"You selected: {pizza_selected.getName()}")
+                
+                # Display the second menu based on user's choice
+                try:
+                    Order.display_second_menu()
+                    second_choice_selection = int(input("What would you like to do: "))
+                except ValueError:
+                    print("Invalid input. Please enter a valid option.")
+                
+                while second_choice_selection != 6:
+                    if second_choice_selection == 1:
+                        print("Available Sizes:")
+                        print("1. Small")
+                        print("2. Medium")
+                        print("3. Large")
+                        try:
+                            size_choice = int(input("Select a size (1-3): "))
+                            if 1 <= size_choice <= 3 and type(size_choice) == int:
+                                # Update the pizza object's size based on the customer's choice
+                                if size_choice == 1:
+                                    pizza_selected.setSize("small")
+                                elif size_choice == 2:
+                                    pizza_selected.setSize("medium")
+                                elif size_choice == 3:
+                                    pizza_selected.setSize("large")
+                                print(f"Size changed to: {pizza_selected.getPizzaSize()}")
+                                print(pizza_selected.getPizzaSize())
+                            else:
+                                print("Invalid size choice.")
+                        except ValueError:
+                            print("Invalid input. Please enter a number (1-3).")
+                    
+                    elif second_choice_selection == 2:
+                        print("Available Pizza Bases:")
+                        print("1. Deep Pan")
+                        print("2. Cheese Crust")
+                        print("3. Thin Crust")
+
+                        try:
+                            base_choice = int(input("Select a pizza base (1-3): "))
+                            # Convert the user's input to lowercase and compare
+                            if 1 <= base_choice <= 3:
+                                if base_choice == 1:
+                                    pizza_shop.pizzaBase.setBase("deep pan")
+                                elif base_choice == 2:
+                                    pizza_shop.pizzaBase.setBase("cheese crust")
+                                elif base_choice == 3:
+                                    pizza_shop.pizzaBase.setBase("thin crust")
+                                print(f"Pizza base changed to: {pizza_shop.pizzaBase.getBase()}")
+                            else:
+                                print("Invalid base choice.")
+                        except ValueError:
+                            print("Invalid input. Please enter a number (1-3).")
+                    elif second_choice_selection == 3:
+                        break
+                    elif second_choice_selection == 4:
+                        break
+                    elif second_choice_selection == 5:
+                        break
+                    elif second_choice_selection == 6:
+                        break
+
+                    else:
+                        print("Invalid choice. Please enter a number (1-6).")
+
+                try:
+                    Order.display_second_menu()
+                    second_choice_selection = int(input("What would you like to do: "))
+                except ValueError:
+                    print("Invalid input. Please enter a valid option.")
+
+        else:       
+            print("Pizza not found in the menu.")
+
+
+
+
+
+
+                            
+                
+        
+                                
+
+
+
+
+
+
+
+
+
+
+
                 #     elif second_choice_selection == 2:
                 #         change pizza base
                 #     elif second_choice_selection == 3:
@@ -343,23 +438,23 @@ def main():
                 #         remove topping pop()
                 #     elif second_choice_selection == 5:
                 #         order
-                
+                    
 
-        elif choice_selection == 3:
-            # Display orders (pizzas in the order)
-            if order is not None:
-                print(f"Customer: {order.customer_name}")
-                print("Orders:")
-                for pizza in order.pizzas:
-                    print(f"- {pizza.getName()} - Price: {pizza.getPrice()}")
-            else:
-                print("No orders placed yet.")
-        elif choice_selection == 4:
-         # Finalize orders (not implemented in the provided code)
-            print("not done yet")
-            # You can implement this part to calculate the total price and perform other actions.
+    #     elif choice_selection == 3:
+    #         # Display orders (pizzas in the order)
+    #         if order is not None:
+    #             print(f"Customer: {order.customer_name}")
+    #             print("Orders:")
+    #             for pizza in order.pizzas:
+    #                 print(f"- {pizza.getName()} - Price: {pizza.getPrice()}")
+    #         else:
+    #             print("No orders placed yet.")
+    #     elif choice_selection == 4:
+    #      # Finalize orders (not implemented in the provided code)
+    #         print("not done yet")
+    #         # You can implement this part to calculate the total price and perform other actions.
             
-    print("Goodbye!")
+    # print("Goodbye!")
     # testing the PizzaBase class
 
     # Order.display_menu()
