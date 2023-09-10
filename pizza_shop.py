@@ -7,6 +7,13 @@
 import math
 
 class Ingredient:
+    """Represents an ingredient used during the pizza selection.
+
+    Initalises the attributes:
+        float (Cost): The cost of the ingredient.
+        str (Name): The name of the ingredient.
+        str (formatPrice): The formatted price of the ingredient.
+    """
     def __init__(self, Cost, Name, formatPrice):  
         self.__Cost = Cost
         self.__Name = Name
@@ -18,31 +25,83 @@ class Ingredient:
     # aggregation relationship between Ingredient and PizzaBase
     # Ingredient --> PizzaBase
     def PizzaBase_aggregation(self, pizza_base):
+        """
+        Establishes the Ingredient --> PizzaBase aggregation relationship.
+
+        Arguments:
+            pizza_base (PizzaBase): The PizzaBase instance associated with this ingredient.
+        """
+
         self.__pizza_base = pizza_base
     # getter method for self.__pizza_base
     def get_pizza_base(self):
+        """
+        Gets the associated PizzaBase instance created in the PizzaBase_aggregation method.
+
+        Returns:
+            The PizzaBase instance.
+        """
         return self.__pizza_base
     # getter method for the private variable pizza_shop
     # for the Ingredient --> PizzaShop aggregation
     def get_pizza_shop(self):
+        """
+        Gets the PizzaShop instance.
+
+        Returns:
+            The PizzaShop instance.
+        """
         return self.__pizza_shop
     # getter method for private variable self.__Cost
     def getCost(self):
+        """
+        Gets the cost of the ingredient.
+
+        Returns:
+            The cost of the ingredient as a float
+        """
         return self.__Cost
     # getter method for private variable self.__name
     def getName(self):
+        """
+        Gets the name of the ingredient.
+
+        Returns:
+            The name of the ingredient as a string
+        """
         return self.__Name
     # getter method for private variable self.__formatPrice
     def getFormatPrice(self):
+        """
+        Gets the formatted price of the ingredient.
+
+        Returns:
+            The formatted price of the ingredient as a string
+        """
         return self.__formatPrice
     # clone method to return a copy of the ingredients used in a pizza or the additional
     # toppings selected by the customer
     def clone(self):
+        """
+        Creates a copy of the Ingredient.
+
+        Returns:
+            A copy of the Ingredient object.
+        """
         cloned_ingredients = Ingredient(self.__Cost, self.__Name, self.__formatPrice)
         return cloned_ingredients
     # equals method to check whether other is equal to the given self argument and whether
     # self and other are the same type of variable
     def equals(self, other):
+        """
+        Checks if another object is equal to this ingredient.
+
+        Arguments:
+            The object to compare with this ingredient.
+
+        Returns:
+            True if the objects are equal, False otherwise.
+        """
         if self == other and type(self) == type(other):
             return True
         else:
@@ -50,20 +109,47 @@ class Ingredient:
     # returns a string of the formatPrice starting with a $ sign and formatted
     # to 2 decimal places
     def displayFormatPrice(self):
+        """
+        Returns a string of the formatted price.
+
+        Returns:
+            The formatted price as a string.
+        """
         return f"${self.__formatPrice:.2f}"
 
 class PizzaShop:
+    """
+    Represents a pizza shop.
+
+    Manages ingredients and pizzas.
+
+    Attributes:
+        dict (ingredients): A dictionary of ingredients.
+        pizzaBase (PizzaBase): The default pizza base.
+    """
     # PizzaBase's attributes are defined in PizzaShop's init method for the 
     # PizzaBase --> PizzaShop composition relationship
     def __init__(self):
-        
+        """
+        Initializes a PizzaShop instance with an empty ingredients dictionary
+        and a default pizza base.
+        """
         # initialise an empty dictionary for ingredients
         self.ingredients = {}
         # PizzaBase --> PizzaShop composition relationship
         # an instance of PizzaBase is created in the init method
-        self.pizzaBase = None
+        self.pizzaBase = PizzaBase("large", "thin crust", 13.00)
     # Ingredient --> PizzaShop aggregation relationship method
     def add_ingredient_PizzaShop_aggregation(self, Name, Cost, formatPrice):
+        """
+        Adds an ingredient to the ingredients dictionary and establishes the 
+        PizzaShop --> Ingredient association relationship.
+
+        Arguments:
+            str (Name): The name of the ingredient.
+            float (Cost): The cost of the ingredient.
+            str (formatPrice): The formatted price of the ingredient.
+        """
         # association relationship (PizzaShop --> Ingredient)
         ingredient = Ingredient(Cost, Name, formatPrice)
         # adds an ingredient to the self.ingredients dictionary
@@ -72,9 +158,21 @@ class PizzaShop:
         self.ingredients[Name] = ingredient
     
     def add_ingredient_PizzaBase_aggregation(self, ingredient):
+        """
+        Creates the  aggregation relationship between PizzaBase and Ingredient.
+
+        Args:
+            ingredient (Ingredient): The Ingredient instance associated with the pizza base.
+        """
         self.ingredients[ingredient]
         ingredient.PizzaBase_aggregation(self)
     def load_menu(self):
+        """
+        Reads the menu.txt file and returns it as a list of Pizza objects.
+
+        Returns:
+            list: A list of Pizza objects representing menu items.
+        """
         # load the ingredients first before the menu
         self.load_ingredients()
         # set open_menu to a variable
@@ -106,90 +204,166 @@ class PizzaShop:
         return pizza_info_separated
     
     def load_ingredients(self):
+        """
+        Reads the ingredients.txt file and returns it as two lists: one containing the pizza
+        bases and the other containing the toppings.
+
+        Returns:
+            list: one list containing the pizza bases, the other containing the toppings.
+        """
         filename = "ingredients.txt"
-        # open the ingredient.txt file for reading
-        open_ingredients = open(filename, "r")
-        # make the ingredient list an empty list
-        ingredients = []
-        # read every line of the text file and return it as a list of strings
-        
-        for eachLine in open_ingredients:
-            lines = open_ingredients.readlines()
 
-            # remove any blank space characters or extra spaces
-            stripped_line = eachLine.strip()
+        try:
+            # Open the ingredients.txt file for reading
+            file = open(filename, "r")
 
-            # split the line to separate the name and price by the dollar symbol - the name and price get put into a list 
-            # with the split() function and can then be accessed with index positions and the $ sign is not included in 
-            # the list
-            split_and_stripped_line = stripped_line.split("$")
-            if len(split_and_stripped_line) == 2:
-                # set the ingredient name to the name
-                name = split_and_stripped_line[0].strip()
-                # set the ingredient price to the price
-                price = float(split_and_stripped_line[1].strip())
-                # checks to see if the line starts with the word base and if it does, 
-                # it makes it a PizzaBase
-                if len(name) >= 4 and name[:4].lower() == "base":
-                    # PizzaBase --> PizzaShop composition relationship
-                    ingredient = PizzaBase("large", name, price)
-                else:        
-                    # composition relationship between PizzaShop and Pizza
-                    # Pizza --> PizzaShop
-                    # an instance of the Pizza class is created within the PizzaShop
-                    # class and is then appended to the ingredients list as a single list item
-                    ## if the line doesn't start with the word base, it makes it a
-                    ## Pizza object with the name and price
-                    ingredient = Pizza(name, price)
+            # Read the lines from the file
+            lines = file.readlines()
+
+            # Close the file
+            file.close()
+
+            # Create empty lists to store ingredients and pizza bases
+            ingredients = []
+            pizza_bases = []
+
+            # Display the toppings, excluding lines starting with "base"
+            print("Toppings:")
+            for line in lines:
+                if not line.strip().lower().startswith("base"):
+                    ingredient_info = line.strip().split("$")
+                    if len(ingredient_info) == 2:
+                        name = ingredient_info[0].strip()
+                        price = float(ingredient_info[1].strip())
+                        ingredient = Ingredient(price, name, f"${price:.2f}")
+                        ingredients.append(ingredient)
+                        print(f"{name} ${price:.2f}")
                 
-                ingredients.append(ingredient)
+                else:
+                    pizza_base_info = line.strip().split("$")
+                    if len(pizza_base_info) == 2:
+                        name = pizza_base_info[0].strip()
+                        price = float(pizza_base_info[1].strip())
+                        pizza_base = PizzaBase("large", name, price)
+                        pizza_bases.append(pizza_base)
 
-                self.ingredients[name] = ingredient
-        # close the ingredients.txt file
-        open_ingredients.close()
+            # Return both the ingredients and pizza bases
+            return ingredients, pizza_bases
 
-        return ingredients
+        except FileNotFoundError:
+            print(f"File '{filename}' not found.")
+        
+        except IOError:
+            print(f"An error occurred while reading '{filename}'.")
 
     def __str__(self):
+        """
+        Returns the PizzaShop instance as a formated string (or f string).
+
+        Returns:
+            str: A string representation of the PizzaShop.
+        """
         return f"Pizza Base: {self.name}, Price: ${self.price:.2f}"
     
 class PizzaBase(Ingredient):
+    """
+    Represents a pizza base.
+
+    This class inherits from Ingredient and therefore inherits all of Ingredient class's
+    attributes and methods.
+
+    Attributes:
+        str (pizzaSize): The size of the pizza ("small", "medium" or "large").
+        str (baseType): The type of pizza base.
+        float (Cost): The cost of the pizza base.
+    """
     def __init__(self, pizzaSize, baseType, Cost):
+        """
+        Initializes PizzaBase's attributes.
+
+        Arguments:
+            str (pizzaSize): The size of the pizza ("small", "medium" or "large").
+            str (baseType): The type of pizza base.
+            float (Cost): The cost of the pizza base.
+        """
         super().__init__(Cost, baseType, "$" + str(Cost))
         self.__pizzaSize = pizzaSize
         self.__baseType = ["deep pan", "cheese crust", "thin crust"]
 
         if pizzaSize == "small":
-            self.__pizzaSize = 10
+            self.__pizzaSize = "small"
         elif pizzaSize == "medium":
-            self.__pizzaSize = 12
+            self.__pizzaSize = "medium"
         elif pizzaSize == "large":
-            self.__pizzaSize = 14
+            self.__pizzaSize = "large"
 
     def getPizzaSize(self):
+        """
+        Gets the size of the pizza.
+
+        Returns:
+            str: The size of the pizza.
+        """
         return self.__pizzaSize
-   
+    
     def calcCostPerSquareInch(self):
+        """
+        Calculates the cost per square inch of the pizza base.
+
+        Returns:
+            float: The cost per square inch of the pizza base.
+        """
         cost = float(self.getCost())
         pizza_size = float(self.__pizzaSize)
         cost_per_square_inch = float((cost/3.14) * ((pizza_size/2)**2))
         return cost_per_square_inch
     
     def setSize(self, newSize):
+        """
+        Sets the size of the pizza/initialises it in the test code to be changed throughout 
+        the test code.
+
+        Arguments:
+            str (newSize): The new size of the pizza ("small", "medium" or "large").
+        """
         self.__pizzaSize = newSize
 
     def getBase(self):
+        """
+        Returns the pizza's base.
+
+        Returns:
+            list: A list of available pizza base types or the selected pizza base in the test code.
+        """
         return self.__baseType
     
     def setBase(self, newBase):
+        """
+        Sets the selected pizza base as the pizza base for the selected pizza in the test code.
+
+        Arguments:
+            str (newBase): The new type of pizza base.
+        """
         self.__baseType = newBase
     # clone method to return a copy of the pizza base
     # use cloned for test code
     def clone(self):
+        """
+        Creates a copy of the pizza base.
+
+        Returns:
+            PizzaBase: A copy of the pizza base.
+        """
         cloned_pizza_base = PizzaBase(self.__pizzaSize, self.__baseType, Ingredient.getCost(self))
         return cloned_pizza_base
     
     def set_size_string(self, newSize):
+        """
+        Converts the inputted size into an int for calculations of the pizza's price.
+
+        Args:
+            str (newSize): The new size of the pizza ("small", "medium" or "large").
+        """
         sizes = {
             "small": 10,
             "medium": 12, 
@@ -204,6 +378,15 @@ class PizzaBase(Ingredient):
     # equals method to check whether other's argument is equal tn self's argument and whether
     # self and other are the same type of variable
     def equals(self, other):
+        """
+        Checks if another object is equal to this pizza base.
+
+        Arguments:
+            other (object): The object to compare with this pizza base.
+
+        Returns:
+            bool: True if the objects are equal, False otherwise.
+        """
         if type(self) == type(other) and \
             self.getCost() == other.getCost() and \
             self.getName() == other.getName() and \
@@ -213,43 +396,132 @@ class PizzaBase(Ingredient):
             return False
 
     def __str__(self):
-        return "PizzaBase" + self.getName() + " " + str(self.__pizzaSize)
+        """
+        Returns a string representation of the PizzaBase instance.
+
+        Returns:
+            str: A string representation of the PizzaBase.
+        """
+        if type(self) == type(other) and \
+            self.getCost() == other.getCost() and \
+            self.getName() == other.getName() and \
+            self.getPizzaSize() == other.getPizzaSize():
+            return True
+        else:
+            return False
 
 class Pizza(PizzaBase):
+    """
+    Represents a pizza.
+
+    This class inherits from PizzaBase and adds Pizza class's attributes and methods.
+
+    Attributes:
+        str (name): The name of the pizza.
+        float (price): The price of the pizza.
+        list (toppings): A list of toppings on the pizza.
+    """
     def __init__(self, name, price, toppings):
+        """
+        Initializes a Pizza instance with the 3 attributes name, price and toppings.
+
+        Arguments:
+            str (name): The name of the pizza.
+            float (price): The price of the pizza.
+            list (topping): A list of toppings on the pizza.
+        """
         super().__init__("large", "thin crust", 13.00)
         self.__price = price
         self.__name = name
         self.__toppings = []
 
     def getName(self):
+        """
+        Returns the name of the pizza.
+
+        Returns:
+            str: The name of the pizza.
+        """
         return self.__name
     # getter method for the private variable self.__price
     def getPrice(self):
+        """
+        Returns the price of the pizza.
+
+        Returns:
+            float: The price of the pizza.
+        """
         return self.__price
     
     def setTopping(self):
+        """
+        Set the toppings list to an empty list/initialises a toppings list
+        for use in the test code.
+
+        Returns:
+            None
+        """
         self.__toppings = []
 
     def addTopping(self, topping):
         self.__toppings.append(topping)
+        """
+        Adds a topping to the pizza in the test code.
 
+        Arguments:
+            str (topping): The topping to add.
+
+        Returns:
+            None
+        """
     def removeToppings(self, topping):
         if topping in self.__toppings:
             self.__toppings.remove(topping)
+        """
+        Removes a topping from the pizza in the test code.
+
+        Arguments:
+            str (topping): The topping to remove.
+
+        Returns:
+            None
+        """
 
     # getter method for the private variable self.__toppings
     def getToppings(self):
+        """
+        Returns the list of toppings on the pizza.
+
+        Returns:
+            list: List of toppings on the pizza.
+        """
         return self.__toppings
     
     # clone method to create a copy of the pizza
     def clone(self):
+        """
+        Creates a copy of the pizza.
+
+        Returns:
+            A new Pizza object.
+        """
         cloned_pizza = Pizza(self.price)
         return cloned_pizza
     
     # equals method to check whether other is equal to the given self argument and whether
     # self and other are the same type of variable
     def equals(self, other):
+        """
+        Compares one object to another object.
+
+        Arguments:
+            obj (Pizza): The other object to compare.
+
+        Returns:
+            bool: True if the two objects are equal, False otherwise.
+         
+        *This method is only used for the unittests*
+        """
         if self == other and type(self) == type(other):
             return True
         else:
@@ -261,6 +533,9 @@ class Order:
         self.pizzas = []
 
     def display_menu():
+        """
+        Displays the first list of options when the customer walks into the pizza shop.
+        """
         print("1. New Customer")
         print("2. Order Pizza")
         print("3. Display Orders")
@@ -268,6 +543,11 @@ class Order:
         print("5. Exit")
 
     def display_second_menu():
+        """
+        Displays the second list of options when the customer has chosen a pizza - this
+        list of options is for the customer to modify their selected pizza/each of their
+        selected pizzas.
+        """
         print("1. Change Size")
         print("2. Change Pizza Base")
         print("3. Add Topping")
@@ -276,13 +556,32 @@ class Order:
         print("6. Cancel")
 
     def customer_name_input():
+        """
+        Accepts customer's name as input for the naming of the .txt file receipt.
+        """
         customer_name = input("Please enter your name: ")
         return customer_name
     # add pizzas to the self._pizzas list (which is the receipt)
     def add_pizza(self, pizza):
+        """
+        Adds a pizza to the order.
+
+        Arguments:
+            pizza (Pizza): The pizza to add to the order.
+
+        Returns:
+            None
+        """
         self.pizzas.append(pizza)
 
     def create_receipt(self):
+        """
+        Create a receipt of the order named as the customer's name with all the pizza's necessary attributes as selected by
+        the customer.
+
+        Returns:
+            List of ordered pizzas as a list in a receipt.
+        """
         # exception handling to check if any pizzas have been ordered so far
         if len(self.pizzas) == 0:
             print("No pizzas ordered so far.")
@@ -327,150 +626,84 @@ def main():
             pizza_selected = None
 
             # Iterate through menu_items to find the selected pizza
-            try:
-                for item in menu_items:
-                    if item.getName().lower() == which_pizza.lower():
-                        pizza_selected = item
-            except ValueError:
-                print("Error occurred while processing your choice. Please try again.")
-
-            # Check if the pizza has been found
-            if pizza_selected:
-                print(f"You selected: {pizza_selected.getName()}")
-                
-                # Display the second menu based on user's choice
-                try:
-                    Order.display_second_menu()
-                    second_choice_selection = int(input("What would you like to do: "))
-                except ValueError:
-                    print("Invalid input. Please enter a valid option.")
-                
-                while second_choice_selection != 6:
-                    if second_choice_selection == 1:
-                        print("Available Sizes:")
-                        print("1. Small")
-                        print("2. Medium")
-                        print("3. Large")
-                        try:
-                            size_choice = int(input("Select a size (1-3): "))
-                            if 1 <= size_choice <= 3 and type(size_choice) == int:
-                                # Update the pizza object's size based on the customer's choice
-                                if size_choice == 1:
-                                    pizza_selected.setSize("small")
-                                elif size_choice == 2:
-                                    pizza_selected.setSize("medium")
-                                elif size_choice == 3:
-                                    pizza_selected.setSize("large")
-                                print(f"Size changed to: {pizza_selected.getPizzaSize()}")
-                                print(pizza_selected.getPizzaSize())
-                            else:
-                                print("Invalid size choice.")
-                        except ValueError:
-                            print("Invalid input. Please enter a number (1-3).")
-                    
-                    elif second_choice_selection == 2:
-                        print("Available Pizza Bases:")
-                        print("1. Deep Pan")
-                        print("2. Cheese Crust")
-                        print("3. Thin Crust")
-
-                        try:
-                            base_choice = int(input("Select a pizza base (1-3): "))
-                            # Convert the user's input to lowercase and compare
-                            if 1 <= base_choice <= 3:
-                                if base_choice == 1:
-                                    pizza_shop.pizzaBase.setBase("deep pan")
-                                elif base_choice == 2:
-                                    pizza_shop.pizzaBase.setBase("cheese crust")
-                                elif base_choice == 3:
-                                    pizza_shop.pizzaBase.setBase("thin crust")
-                                print(f"Pizza base changed to: {pizza_shop.pizzaBase.getBase()}")
-                            else:
-                                print("Invalid base choice.")
-                        except ValueError:
-                            print("Invalid input. Please enter a number (1-3).")
-                    elif second_choice_selection == 3:
-                        break
-                    elif second_choice_selection == 4:
-                        break
-                    elif second_choice_selection == 5:
-                        break
-                    elif second_choice_selection == 6:
-                        break
-
-                    else:
-                        print("Invalid choice. Please enter a number (1-6).")
-
-                try:
-                    Order.display_second_menu()
-                    second_choice_selection = int(input("What would you like to do: "))
-                except ValueError:
-                    print("Invalid input. Please enter a valid option.")
-
-        else:       
-            print("Pizza not found in the menu.")
-
-
-
-
-
-
-                            
-                
-        
-                                
-
-
-
-
-
-
-
-
-
-
-
-                #     elif second_choice_selection == 2:
-                #         change pizza base
-                #     elif second_choice_selection == 3:
-                #         add topping
-                #     elif second_choice_selection == 4:
-                #         remove topping pop()
-                #     elif second_choice_selection == 5:
-                #         order
-                    
-
-    #     elif choice_selection == 3:
-    #         # Display orders (pizzas in the order)
-    #         if order is not None:
-    #             print(f"Customer: {order.customer_name}")
-    #             print("Orders:")
-    #             for pizza in order.pizzas:
-    #                 print(f"- {pizza.getName()} - Price: {pizza.getPrice()}")
-    #         else:
-    #             print("No orders placed yet.")
-    #     elif choice_selection == 4:
-    #      # Finalize orders (not implemented in the provided code)
-    #         print("not done yet")
-    #         # You can implement this part to calculate the total price and perform other actions.
             
-    # print("Goodbye!")
-    # testing the PizzaBase class
+            for item in menu_items:
+                if item.getName().lower() == which_pizza.lower():
+                    pizza_selected = item
+            print(f"You selected: {pizza_selected.getName()}")
+            print(f"Your pizza: {pizza_selected.getName()} {pizza_selected.getPizzaSize()} {pizza_selected.setBase('large')} ${pizza_selected.getPrice():.2f}")
+            print(f" {', '.join(pizza_selected.getToppings())}")
 
-    # Order.display_menu()
-    # size_input = int(input("Choose your pizza sizze(1 = small, 2 = medium, 3 = large):"))
-    # b = PizzaBase(size_input, "cheese crust", size_input, 2.0)
-    # print(b)
-    # print(b.getName())
-    # print(b)
-    # print(b.getName())
-    # # testing the PizzaShop class
-    # print()
-    # pizza_shop = PizzaShop()
-    # pizza_shop.load_menu()
-    # pizza_shop.load_ingredients()
-    # print(pizza_shop)
-    # p = PizzaShop()
+                # Display the second menu based on user's choice
+            try:
+                Order.display_second_menu()
+                second_choice_selection = int(input("What would you like to do: "))
+            except ValueError:
+                print("Invalid input. Please enter a valid option.")
+            # Check if the pizza has been found
+
+            print(f"You selected: {pizza_selected.getName()}")
+            while second_choice_selection != 6:
+                if second_choice_selection == 1:
+                    print("Available Sizes:")
+                    print("1. Small")
+                    print("2. Medium")
+                    print("3. Large")
+                    try:
+                        valid_sizes = ["small", "medium", "large"]
+                        size_choice = input("Select a size: ")
+                        if size_choice.lower() in valid_sizes:
+                            # Update the pizza object's size based on the customer's choice
+                            if size_choice == "small":
+                                pizza_selected.setSize("small")
+                            elif size_choice == "medium":
+                                pizza_selected.setSize("medium")
+                            elif size_choice == "large":
+                                pizza_selected.setSize("large")
+                            print(f"Size changed to: {pizza_selected.getPizzaSize()}")
+                            Order.display_second_menu()
+                            second_choice_selection = int(input("What would you like to do: "))
+                        else:
+                            print("Invalid size choice.")
+                    except ValueError:
+                        print("Invalid input. Please enter a number (1-3).")
+                elif second_choice_selection == 2:
+                    if second_choice_selection == 2:
+                        print("Bases:")
+                        for base in pizza_shop.pizzaBase.getBase():
+                            print(base.capitalize())
+                        
+                        base_choice = input("Select a pizza base: ").strip().lower()
+
+                        # Check if the selected base choice is valid
+                        valid_bases = []
+                        for base in pizza_shop.pizzaBase.getBase():
+                            valid_bases.append(base.lower())
+                        if base_choice in valid_bases:
+                            # Set the pizza base of the selected pizza to the chosen base
+                            pizza_selected.setBase(base_choice)
+                            print(f"Your pizza: {pizza_selected.getName()}, {pizza_selected.getPizzaSize()} {pizza_selected.getBase()} ${pizza_selected.getPrice():.2f}:")
+                            # Display toppings on the next line
+                            # print(f"empty list: {pizza_selected.setToppings()}")
+                            print(f"Toppings {', '.join(pizza_selected.getToppings())}")
+                            Order.display_second_menu()
+                            second_choice_selection = int(input("What would you like to do: "))
+                        else:
+                            print("Invalid base choice. Please enter a valid base type.")
+                            
+                elif second_choice_selection == 3:
+                    print("Toppings:")
+                    pizza_shop.load_ingredients()
+                    pizza_instance = Pizza(item.getName(), item.getPrice(), item.getToppings())
+                    toppings_selection = input("What topping would you like to add: ")
+                    
+                    # Check if the selected topping is valid
+                    if toppings_selection.lower() in pizza_shop.load_ingredients():
+                        # Add the topping to the selected pizza
+                        pizza_instance.addTopping(toppings_selection)
+
+    else:       
+        print("Pizza not found in the menu.")
 
 if __name__ == '__main__':
     main()
